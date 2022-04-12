@@ -1,0 +1,82 @@
+:root {
+  --primary-color: rgb(7, 9, 9);
+  --overcast-color: rgb(127, 155, 166);
+  --sunny-color: rgb(1, 191, 255);
+  --dark-color: rgb(78, 105, 105);
+  --earth-color: rgb(104, 120, 100);
+
+  --padding-sml: .5rem;
+  --padding-std: 1.5rem;
+  --padding-lrg: 2.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+  background-color: var(--earth-color);
+}
+
+h1 {
+  font-family: helvetica, arial, sans-serif;
+  padding-bottom: 2rem;
+  color: var(--primary-color);
+}
+
+form {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  margin: auto;
+  overflow: hidden;
+}
+
+form input {
+  border: none;
+  border-radius: 10px 0 0 10px;
+  width: 100%;
+  font-size: 16px;
+  padding: var(--padding-sml);
+}
+
+form button {
+  justify-content: end;
+  border: none;
+  border-radius: 0 10px 10px 0;
+  font-size: 16px;
+  padding: var(--padding-sml);
+  color: white;
+  background-color: var(--primary-color);
+}
+
+.hidden {
+  display: none;
+}
+
+.dropdown {
+  border-radius: 10px 0 0 0;
+}
+
+.city-list {
+  position: absolute;
+  list-style-type: none;
+  width: 100%;
+  background-color: white;
+  border-radius: 0 0 0 10px;
+  overflow: hidden;
+}
+
+.city-list li {
+  padding: var(--padding-sml);
+  text-align: start;
+}
+
+.city-list li:hover {
+  background-color: lightgray;
+}

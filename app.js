@@ -45,7 +45,14 @@ const getLatLon = (data) => {
 }
 
 //SELECT CITY FROM SEARCH DROPDOWN
-// const dropdownSelect = (e) =>
+const dropdownSelect = (e) => {
+  document.querySelector("input").classList.remove("dropdown")
+  document.querySelector(".city-list").classList.add("hidden")
+  console.log(e.target)
+}
+
+//EVENT LISTENER FOR DROPDOWN
+document.querySelector(".city-list").addEventListener('click', dropdownSelect)
 
 //DISPLAY LIST OF CITIES UNDER SEARCH
 const cityList = (data) => {
@@ -56,7 +63,6 @@ const cityList = (data) => {
   }
   document.querySelector("input").classList.add("dropdown")
   document.querySelector(".city-list").classList.remove("hidden")
-  // document.querySelector(".droplist").addEventListener('click', dropdownSelect(e))
 }
 
 //CHECK FOR MULTIPLE CITIES
@@ -72,4 +78,4 @@ const cityCheck = (data) => {
   }
 }
 
-getCityLocation('portland')
+// getCityLocation()

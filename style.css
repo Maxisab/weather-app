@@ -34,7 +34,6 @@ form {
   align-items: center;
   width: 20%;
   margin: auto;
-  overflow: hidden;
 }
 
 form input {
@@ -45,7 +44,12 @@ form input {
   padding: var(--padding-sml);
 }
 
+form:active {
+  outline: none;
+}
+
 form button {
+  align-self: flex-start;
   justify-content: end;
   border: none;
   border-radius: 0 10px 10px 0;
@@ -59,6 +63,10 @@ form button {
   display: none;
 }
 
+.input-field {
+  position: relative;
+}
+
 .dropdown {
   border-radius: 10px 0 0 0;
 }
@@ -70,6 +78,7 @@ form button {
   background-color: white;
   border-radius: 0 0 0 10px;
   overflow: hidden;
+  z-index: 1000;
 }
 
 .city-list li {

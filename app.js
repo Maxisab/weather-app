@@ -1,11 +1,15 @@
 //USE IP DATA FROM USER TO DISPLAY DEFAULT
-// const userLocation = (data) => {
+const userLocation = (data) => {
+  const { lat, lng } = data.location
 
-// }
+  let latLon = `lat=${lat}&lon=${lng}`
+  getWeatherData(latLon)
+  // console.log(data)
+}
 
 //FETCH IP LOCATION FOR DEFAULT VIEW
 const getIPData = async (ip) => { 
-  const url = "https://geo.ipify.org/api/v2/country,city?apiKey=at_2nKUG70FDc42eF0S1Wo7CraMOYU1K" + ip
+  const url = 'https://geo.ipify.org/api/v2/country,city?apiKey=at_2nKUG70FDc42eF0S1Wo7CraMOYU1K&ipAddress='
   fetch(url)
       .then(res => res.json())
       .then(data => userLocation(data))
@@ -13,7 +17,7 @@ const getIPData = async (ip) => {
 
 //FETCH CITY COORDINATES DATA FROM OPENWEATHER
 const getCityLocation = async (city) => {
-  const url = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=fd275eec94ba2113fdf01b7e5cfb6818"
+  const url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&limit=5&appid=fd275eec94ba2113fdf01b7e5cfb6818'
   fetch(url)
     .then(res => res.json())
     .then(data => cityCheck(data))
@@ -21,7 +25,7 @@ const getCityLocation = async (city) => {
 
 //FETCH WEATHER DATA FROM OPENWEATHER
 const getWeatherData = async (latLon) => {
-  const url = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&units=imperial&exclude=hourly,minutely&appid=fd275eec94ba2113fdf01b7e5cfb6818"
+  const url = 'https://api.openweathermap.org/data/2.5/onecall?' + latLon + '&units=imperial&exclude=hourly,minutely&appid=fd275eec94ba2113fdf01b7e5cfb6818'
   fetch(url)
     .then(res => res.json())
     .then(data => console.log(data))
@@ -44,25 +48,37 @@ const getLatLon = (data) => {
   return latLon
 }
 
-//SELECT CITY FROM SEARCH DROPDOWN
+//SELECT CITY FROM SEARCH DROPDOWN/CLEAR LI
 const dropdownSelect = (e) => {
-  document.querySelector("input").classList.remove("dropdown")
-  document.querySelector(".city-list").classList.add("hidden")
-  console.log(e.target)
+  document.querySelector('input').classList.remove('dropdown')
+  document.querySelector('.city-list').classList.add('hidden')
+  getWeatherData(e.target.getAttribute('data-latlon'))
+  document.querySelector('.city-list').innerHTML = ''
 }
 
 //EVENT LISTENER FOR DROPDOWN
-document.querySelector(".city-list").addEventListener('click', dropdownSelect)
+document.querySelector('.city-list').addEventListener('click', dropdownSelect)
+
+//FUNCTION CREATES LI DYNAMICALLY FOR CITY-LIST UL
+const createLi = (data) => {
+  const { name, state, country, lat, lon } = data
+  let ul = document.querySelector('.city-list')
+  let li = document.createElement('li')
+  li.classList.add('droplist')
+  li.setAttribute('data-latlon', `lat=${lat}&lon=${lon}`)
+  ul.appendChild(li)
+  li.textContent =`${name}, ${state}, ${country}`
+}
 
 //DISPLAY LIST OF CITIES UNDER SEARCH
 const cityList = (data) => {
   console.log(data)
   for(let i = 0; i < data.length; i++) {
-  const { name, state, country } = data[i]
-  document.querySelector(`#city-${i}`).textContent =`${name}, ${state}, ${country}`
+  // document.querySelector(`#city-${i}`).textContent =`${name}, ${state}, ${country}`
+    createLi(data[i])
   }
-  document.querySelector("input").classList.add("dropdown")
-  document.querySelector(".city-list").classList.remove("hidden")
+  document.querySelector('input').classList.add('dropdown')
+  document.querySelector('.city-list').classList.remove('hidden')
 }
 
 //CHECK FOR MULTIPLE CITIES
@@ -78,4 +94,4 @@ const cityCheck = (data) => {
   }
 }
 
-// getCityLocation()
+getIPData()

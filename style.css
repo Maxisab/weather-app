@@ -16,6 +16,10 @@
   box-sizing: border-box;
 }
 
+li {
+  list-style-type: none;
+}
+
 header {
   text-align: center;
   padding-top: 3rem;
@@ -57,6 +61,30 @@ form button {
   padding: var(--padding-sml);
   color: white;
   background-color: var(--primary-color);
+}
+
+.daily-li {
+  display: flex;
+}
+
+.daily-li > img {
+  max-width: 40px;
+  max-height: auto;
+}
+
+.weather-info {
+  display: flex;
+  justify-content: center;
+}
+
+.current-weather {
+  display: flex;
+  align-items: center;
+}
+
+.cicon {
+max-width: 40px;
+max-height: auto;
 }
 
 .hidden {

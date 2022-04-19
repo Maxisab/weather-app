@@ -20,6 +20,7 @@ const getCityLocation = async (city) => {
   const url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&limit=5&appid=fd275eec94ba2113fdf01b7e5cfb6818'
   fetch(url)
     .then(res => res.json())
+    // .then(data => saveName()) 
     .then(data => cityCheck(data))
 }
 
@@ -28,7 +29,7 @@ const getWeatherData = async (latLon) => {
   const url = 'https://api.openweathermap.org/data/2.5/onecall?' + latLon + '&units=imperial&exclude=hourly,minutely&appid=fd275eec94ba2113fdf01b7e5cfb6818'
   fetch(url)
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => populateWeather(data))
 } 
 
 //GRAB CITY FROM SEARCH AND SEND TO FETCH
@@ -74,7 +75,6 @@ const createLi = (data) => {
 const cityList = (data) => {
   console.log(data)
   for(let i = 0; i < data.length; i++) {
-  // document.querySelector(`#city-${i}`).textContent =`${name}, ${state}, ${country}`
     createLi(data[i])
   }
   document.querySelector('input').classList.add('dropdown')
@@ -94,4 +94,32 @@ const cityCheck = (data) => {
   }
 }
 
+//POPULATE DAILY WEATHER INFO TO DOM
+const dailyWeather = (data) => {
+  for(let i = 0; i < data.daily.length; i++) {
+    const { day, night } = data.daily[i].temp
+    const { icon, description } = data.daily[i].weather[0]
+    let j = i+1
+    document.querySelector('#day-'+ j).textContent = `${day}F`
+    document.querySelector('#night-'+ j).textContent = `${night}F`
+    document.querySelector('#dicon-'+ j).setAttribute('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png')
+    document.querySelector('#ddescription-'+ j).textContent = description
+  }
+}
+
+//POPULATE WEATHER INFO TO DOM
+const populateWeather = (data) => {
+  const { temp } = data.current
+  const { icon, description } = data.current.weather[0]
+  document.querySelector('.ctemp').textContent = `${temp}F`
+  document.querySelector('.cicon').setAttribute('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png')
+  document.querySelector('.cdescription').textContent = description
+  dailyWeather(data)
+}
+
 getIPData()
+console.log(document.querySelector('.forecast-list :nth-child(1)'))
+
+
+  
+  

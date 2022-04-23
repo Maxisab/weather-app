@@ -22,14 +22,14 @@ li {
 
 header {
   text-align: center;
-  padding-top: 3rem;
-  padding-bottom: 5rem;
+  padding-top: var(--padding-lrg);
+  padding-bottom: calc(var(--padding-lrg)*2);
   background-color: var(--earth-color);
 }
 
 h1 {
   font-family: helvetica, arial, sans-serif;
-  padding-bottom: 2rem;
+  padding-bottom: var(--padding-std);
   color: var(--primary-color);
 }
 
@@ -48,7 +48,7 @@ form input {
   padding: var(--padding-sml);
 }
 
-form:active {
+input:focus {
   outline: none;
 }
 
@@ -63,8 +63,19 @@ form button {
   background-color: var(--primary-color);
 }
 
+main {
+  padding-top: var(--padding-lrg);
+}
+
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .daily-li {
   display: flex;
+  align-items: center;
 }
 
 .daily-li > img {
@@ -74,7 +85,7 @@ form button {
 
 .weather-info {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .current-weather {

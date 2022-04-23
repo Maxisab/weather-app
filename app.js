@@ -4,6 +4,7 @@ const userLocation = (data) => {
 
   let latLon = `lat=${lat}&lon=${lng}`
   getWeatherData(latLon)
+  getCityName(latLon)
   // console.log(data)
 }
 
@@ -39,6 +40,7 @@ query.addEventListener('submit', function(e){
   const city = query.querySelector('input[type="text"]').value.trim()
   console.log(city)
   getCityLocation(city)
+  document.querySelector('.city-list').innerHTML = ''
 })
 
 //GRAB LAT/LON FROM CITY 
@@ -54,6 +56,7 @@ const dropdownSelect = (e) => {
   document.querySelector('input').classList.remove('dropdown')
   document.querySelector('.city-list').classList.add('hidden')
   getWeatherData(e.target.getAttribute('data-latlon'))
+  getCityName(e.target.getAttribute('data-latlon'))
   document.querySelector('.city-list').innerHTML = ''
 }
 
@@ -87,6 +90,7 @@ const cityCheck = (data) => {
   if (data.length === 1) {
     const latLon = getLatLon(data)
     getWeatherData(latLon)
+    getCityName(latLon)
 
     //MULTIPLE CITIES CHECK
   } else if (data.length > 1) {
@@ -94,14 +98,24 @@ const cityCheck = (data) => {
   }
 }
 
+//GET NAME OF DAY FROM TIME STAMP
+const getDayName = (dt) => {
+  const dayIndex = new Date(dt*1000).getUTCDay()
+    const dayArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    let dayName = dayArray[dayIndex]
+    return dayName
+}
+
 //POPULATE DAILY WEATHER INFO TO DOM
 const dailyWeather = (data) => {
-  for(let i = 0; i < data.daily.length; i++) {
+  console.log(data)
+  for(let i = 0; i < data.daily.length-1; i++) {
+    let j = i+1
     const { day, night } = data.daily[i].temp
     const { icon, description } = data.daily[i].weather[0]
-    let j = i+1
-    document.querySelector('#day-'+ j).textContent = `${day}F`
-    document.querySelector('#night-'+ j).textContent = `${night}F`
+    const { dt } = data.daily[i]
+    document.querySelector('#name-'+ j).textContent = getDayName(dt)
+    document.querySelector('#day-'+ j).textContent = `${day}${String.fromCharCode(176)}F / ${night}${String.fromCharCode(176)}F`
     document.querySelector('#dicon-'+ j).setAttribute('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png')
     document.querySelector('#ddescription-'+ j).textContent = description
   }
@@ -117,8 +131,22 @@ const populateWeather = (data) => {
   dailyWeather(data)
 }
 
+//GET CITY NAME FROM LAT/LON FOR USE IN DOM
+const getCityName = async (latLon) => {
+  const url = 'http://api.openweathermap.org/geo/1.0/reverse?' + latLon + '&limit=1&appid=fd275eec94ba2113fdf01b7e5cfb6818'
+  fetch(url)
+    .then(res => res.json()) 
+    .then(data => cityName(data))
+}
+
+//POPULATE CITY NAME FROM GETCITYNAME FETCH
+const cityName = (data) => {
+  console.log(data)
+  const { name, country, } = data[0]
+  document.querySelector('.current-city').textContent = `${name}, ${country}`
+}
+
 getIPData()
-console.log(document.querySelector('.forecast-list :nth-child(1)'))
 
 
   
